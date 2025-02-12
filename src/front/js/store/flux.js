@@ -5,7 +5,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 			demo: [{ title: "FIRST", background: "white", initial: "white" },
 			{ title: "SECOND", background: "white", initial: "white" }],
 			contacts: [],
-			currentContact: {}
+			currentContact: {},
+			characters: [],
+			currentCharacter: {},
+			planets: [],
+			currentPlanet: {},
+			species: [],
+			currentSpecie: {},
+			favouritesList: []
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -113,6 +120,151 @@ const getState = ({ getStore, getActions, setStore }) => {
 					contacts: store.contacts.filter(contact => contact.id !== id)
 				});
 			},
+
+			toggleFavorite: (item) => {
+				const store = getStore();
+				const exists = store.favouritesList.some(fav => fav.name === item.name);
+		
+				if (exists) {
+					setStore({
+						favouritesList: store.favouritesList.filter(fav => fav.name !== item.name)
+					});
+				} else {
+					setStore({
+						favouritesList: [...store.favouritesList, item]
+					});
+				}
+			},
+		
+			removeFavorite: (name) => {
+				const store = getStore();
+				setStore({
+					favouritesList: store.favouritesList.filter(fav => fav.name !== name)
+				});
+			},
+
+			getCharacters: async () => {
+				const host = "https://www.swapi.tech/api"
+				const characters = "people"
+				const uri = `${host}/${characters}/`
+				const options = {
+					method: 'GET'
+				}
+
+				const response = await fetch(uri, options)
+				if (!response.ok) {
+					console.log('Error', response.status, response.statusText);
+					return
+				}
+				const data = await response.json()
+				setStore({ characters: data.results })
+
+			},
+
+			getPlanets: async () => {
+				const host = "https://www.swapi.tech/api"
+				const planets = "planets"
+				const uri = `${host}/${planets}/`
+				const options = {
+					method: 'GET'
+				}
+
+				const response = await fetch(uri, options)
+				if (!response.ok) {
+					console.log('Error', response.status, response.statusText);
+					return
+				}
+				const data = await response.json()
+				setStore({ planets: data.results })
+			},
+
+			getSpecies: async () => {
+				const host = "https://www.swapi.tech/api"
+				const species = "species"
+				const uri = `${host}/${species}/`
+				const options = {
+					method: 'GET'
+				}
+
+				const response = await fetch(uri, options)
+				if (!response.ok) {
+					console.log('Error', response.status, response.statusText);
+					return
+				}
+				const data = await response.json()
+				setStore({ species: data.results })
+			},
+
+			actualCharacter: async (id) => {
+				const host = "https://www.swapi.tech/api";
+				const characters = "people";
+				const uri = `${host}/${characters}/${id}`; 
+				const options = {
+					method: 'GET',
+				};
+				setStore({currentCharacter: null})
+			
+				const response = await fetch(uri, options);
+				if (!response.ok) {
+					console.log('Error', response.status, response.statusText);
+					return;
+				}
+			
+				const data = await response.json();
+				const character = data.result.properties;
+			
+				const uid = character.url.split('/')[5]; 
+				setStore({ currentCharacter: { ...character, uid } });
+			},
+
+			actualPlanet: async (id) => {
+				const host = "https://www.swapi.tech/api";
+				const planets = "planets";
+				const uri = `${host}/${planets}/${id}`;
+				const options = {
+					method: 'GET'
+				};
+				setStore({ currentPlanet: null });
+			
+				const response = await fetch(uri, options);
+				if (!response.ok) {
+					console.log('Error', response.status, response.statusText);
+					return;
+				}
+			
+				const data = await response.json();
+				const planet = data.result.properties;
+			
+				const uid = data.result.uid;
+			
+				setStore({ currentPlanet: { ...planet, uid } });
+			},
+			
+
+			actualSpecie: async (id) => {
+				const host = "https://www.swapi.tech/api";
+				const specie = "species";
+				const uri = `${host}/${specie}/${id}`;
+				const options = {
+					method: 'GET'
+				};
+				setStore({currentSpecie: null})
+			
+				const response = await fetch(uri, options);
+				if (!response.ok) {
+					console.log('Error', response.status, response.statusText);
+					return;
+				}
+			
+				const data = await response.json();
+				const specieData = data.result.properties;
+			
+				const uid = data.result.uid;
+			
+				setStore({ currentSpecie: { ...specieData, uid } });
+			},
+			
+
 
 
 			getMessage: async () => {

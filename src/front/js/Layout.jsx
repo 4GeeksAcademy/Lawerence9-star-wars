@@ -16,8 +16,8 @@ import { EditContacts } from "./pages/EditContacts.jsx";
 import { AddContact } from "./pages/AddContact.jsx";
 import { Characters } from "./pages/Characters.jsx";
 import { Planets } from "./pages/Planets.jsx";
-import { Starships } from "./pages/Starships.jsx";
-import { StarshipDetails } from "./pages/StarshipDetails.jsx";
+import { Species } from "./pages/Species.jsx";
+import { SpecieDetails } from "./pages/SpecieDetails.jsx";
 import { PlanetDetails } from "./pages/PlanetDetails.jsx";
 import { CharacterDetails } from "./pages/CharacterDetails.jsx";
 
@@ -45,8 +45,8 @@ const Layout = () => {
                         <Route element={<CharacterDetails />} path='/character-details' />
                         <Route element={<Planets />} path='/planets' />
                         <Route element={<PlanetDetails />} path='/planet-details' />
-                        <Route element={<Starships />} path='/starships' />
-                        <Route element={<StarshipDetails />} path='/starship-details' />
+                        <Route element={<Species />} path='/species' />
+                        <Route element={<SpecieDetails />} path='/specie-details' />
                         <Route element={<Error404 />} path='*' />
                     </Routes>
                     <Footer />
