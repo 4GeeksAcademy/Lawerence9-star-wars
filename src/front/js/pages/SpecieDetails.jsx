@@ -6,7 +6,7 @@ export const SpecieDetails = () => {
     const { store } = useContext(Context);
 
     const handleImgError = (event) => {
-        event.target.src = 'https://starwars-visualguide.com/assets/img/big-placeholder.jpg';
+        event.target.src = 'https://github.com/tbone849/star-wars-guide/blob/master/build/assets/img/big-placeholder.jpg?raw=true';
     };
 
     if (!store.currentSpecie || !store.currentSpecie.uid) {
@@ -26,7 +26,7 @@ export const SpecieDetails = () => {
                 <div className="col-md-4">
                     <img 
                         onError={handleImgError} 
-                        src={`https://starwars-visualguide.com/assets/img/species/${store.currentSpecie.uid}.jpg`} 
+                        src={`https://raw.githubusercontent.com/tbone849/star-wars-guide/refs/heads/master/build/assets/img/species/${store.currentSpecie.uid}.jpg`} 
                         alt={store.currentSpecie.name} 
                         className="img-fluid" 
                     />

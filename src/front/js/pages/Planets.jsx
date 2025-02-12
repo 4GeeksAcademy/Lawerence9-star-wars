@@ -30,10 +30,10 @@ export const Planets = () => {
                                 <div className="card border-dark rounded text-bg-dark" style={{ width: "100%", height: "100%" }}>
                                     <img
                                         onError={handleImgError}
-                                        src={`https://starwars-visualguide.com/assets/img/planets/${index + 1}.jpg`}
+                                        src={`https://raw.githubusercontent.com/tbone849/star-wars-guide/refs/heads/master/build/assets/img/planets/${index + 1}.jpg`}
                                         className="card-img-top"
                                         alt={element.name}
-                                        style={{ height: "150px", objectFit: "cover" }}
+                                        style={{ height: "250px", objectFit: "cover" }}
                                     />
                                     <div className="card-body d-flex flex-column">
                                         <h5 className="card-title">{element.name}</h5>

@@ -6,7 +6,7 @@ export const CharacterDetails = () => {
     const { store } = useContext(Context);
 
     const handleImgError = (event) => {
-        event.target.src = 'https://starwars-visualguide.com/assets/img/big-placeholder.jpg';
+        event.target.src = 'https://github.com/tbone849/star-wars-guide/blob/master/build/assets/img/big-placeholder.jpg?raw=true';
     };
 
     useEffect(() => {
@@ -29,7 +29,7 @@ export const CharacterDetails = () => {
                 <div className="col-md-4">
                     <img 
                         onError={handleImgError} 
-                        src={`https://starwars-visualguide.com/assets/img/characters/${store.currentCharacter.uid}.jpg`} 
+                        src={`https://raw.githubusercontent.com/tbone849/star-wars-guide/refs/heads/master/build/assets/img/characters/${store.currentCharacter.uid}.jpg`} 
                         alt={store.currentCharacter.name} 
                         className="img-fluid" 
                     />

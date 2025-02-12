@@ -26,7 +26,7 @@ export const PlanetDetails = () => {
                 <div className="col-md-4">
                     <img 
                         onError={handleImgError} 
-                        src={`https://starwars-visualguide.com/assets/img/planets/${store.currentPlanet.uid}.jpg`} 
+                        src={`https://raw.githubusercontent.com/tbone849/star-wars-guide/refs/heads/master/build/assets/img/planets/${store.currentPlanet.uid}.jpg`} 
                         alt={store.currentPlanet.name} 
                         className="img-fluid" 
                     />
