@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timezone
+from sqlalchemy import func
 
 
 db = SQLAlchemy()
@@ -25,31 +26,6 @@ class Users(db.Model):
             "first_name": self.first_name,
             "last_name": self.last_name}
     
-
-class Products(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, unique=True, nullable=False)
-    description = db.Column(db.String, unique=False, nullable=True)
-    price = db.Column(db.Float, unique=False)
-
-
-class Bills(db.Model):
-    __tablename__="bills"
-    id = db.Column(db.Integer, primary_key=True)
-    created_at = db.Column(db.DateTime(timezone=True), nullable = False, default=lambda: datetime.now(timezone.utc)) # Default= dia de creación
-    total = db.Column(db.Float, nullable=False)
-    bill_address= db.Column(db.String)
-    status = db.Column(db.Enum("pending", "paid", "cancel", name="status"), nullable=False)
-    payment_method= db.Column(db.Enum("visa", "amex", "paypal", name="payment"), nullable=False)
-
-
-class BillItems(db.Model):
-    __tablename__="bill_items"
-    id = db.Column(db.Integer, primary_key=True)
-    price_per_unit= db.Column(db.Float, nullable = False)
-    quantity= db.Column(db.Integer, nullable = False)
-    total_price = db.Column(db.Float, nullable = False)
-
 
 class Followers(db.Model):
     id = db.Column(db.Integer, primary_key=True)
