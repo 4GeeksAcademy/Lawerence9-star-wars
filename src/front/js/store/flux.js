@@ -100,6 +100,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				await getActions().getContacts();
 			},
+
 			deleteContact: async (id) => {
 				const host = "https://playground.4geeks.com/contact/agendas";
 				const user = "AlvaroD";
@@ -240,7 +241,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ currentPlanet: { ...planet, uid } });
 			},
 			
-
 			actualSpecie: async (id) => {
 				const host = "https://www.swapi.tech/api";
 				const specie = "species";
@@ -263,9 +263,30 @@ const getState = ({ getStore, getActions, setStore }) => {
 			
 				setStore({ currentSpecie: { ...specieData, uid } });
 			},
+
+			login: async (email, password) => {
+				const host = "https://literate-umbrella-p65qg6pwpxw36g4p-3001.app.github.dev";
+				const endpoint = "api/login";
+				const uri = `${host}/${endpoint}`;
+				const options = {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify({ email, password })
+				};
 			
-
-
+				const response = await fetch(uri, options);
+				if (!response.ok) {
+					console.log("Error", response.status, response.statusText);
+					return false;
+				}
+			
+				const data = await response.json();
+				sessionStorage.setItem("token", data.access_token);
+				
+				return true;
+			},			
 
 			getMessage: async () => {
 				try {
@@ -279,6 +300,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log("Error loading message from backend", error)
 				}
 			},
+
 			changeColor: (index, color) => {
 				//get the store
 				const store = getStore();

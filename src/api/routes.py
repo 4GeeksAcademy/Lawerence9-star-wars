@@ -6,6 +6,10 @@ from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from api.models import db, Users, CharactersFavourites, PlanetsFavourites
 import requests
+from flask_jwt_extended import create_access_token
+from flask_jwt_extended import jwt_required
+from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import get_jwt
 
 
 
@@ -29,6 +33,42 @@ def users():
         response_body["message"] = "Users data retrieved successfully"
         response_body["results"] = results
         return response_body, 200
+    
+
+# Create a route to authenticate your users and return JWTs. The
+# create_access_token() function is used to actually generate the JWT.
+@api.route("/login", methods=["POST"])
+def login():
+    response_body = {}
+    data = request.json
+    email = data.get("email", None)
+    password = data.get("password", None)
+    row = db.session.execute(db.select(Users).where(Users.email == email, Users.password == password, Users.is_active == True)).scalar()
+    if row is None:
+        response_body["message"] = "Bad username or password"
+        return response_body, 401
+    user = row.serialize()
+    claims = {
+        "user_id": user["id"],
+        "is_admin": user["is_admin"]
+    }
+    access_token = create_access_token(identity=email, additional_claims=claims)
+    response_body["message"] = "User logged"
+    response_body["access_token"] = access_token
+    return response_body, 200
+
+
+# Protect a route with jwt_required, which will kick out requests
+# without a valid JWT present.
+@api.route("/protected", methods=["GET"])
+@jwt_required()
+def protected():
+    # Access the identity of the current user with get_jwt_identity
+    response_body ={}
+    current_user = get_jwt_identity()
+    additional_claims = get_jwt()
+    response_body["message"]= f"User logged: {current_user}"
+    return response_body, 200
 
 
 @api.route("/users/<int:user_id>/characters-favourites", methods=["GET", "POST"])

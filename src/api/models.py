@@ -13,7 +13,7 @@ class Users(db.Model):
     first_name = db.Column(db.String())
     last_name = db.Column(db.String())
     is_active = db.Column(db.Boolean(), nullable=False)
-
+    is_admin = db.Column(db.Boolean(), nullable=False)
     def __repr__(self):
         return f'<User id: {self.id} - {self.email}>'
 
@@ -23,7 +23,8 @@ class Users(db.Model):
                 'email': self.email,
                 'is_active': self.is_active,
                 'first_name': self.first_name,
-                'last_name': self.last_name}
+                'last_name': self.last_name,
+                'is_admin': self.is_admin}
 
 
 class Followers(db.Model):

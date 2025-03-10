@@ -13,6 +13,9 @@ export const Navbar = () => {
                     </Link>
                 </div>
                 <div className="">
+                    <Link to="/login">
+                        <span className="navbar-brand">Login</span>
+                    </Link>
                     <Link to="/contacts">
                         <span className="navbar-brand">Contacts</span>
                     </Link>
