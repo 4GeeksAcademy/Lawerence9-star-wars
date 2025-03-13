@@ -1,9 +1,21 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
+import { useNavigate } from "react-router-dom";
 
 export const Navbar = () => {
     const { store, actions } = useContext(Context)
+    const navigate = useNavigate()
+
+    const handleLogoutButton = (event) => {
+        event.preventDefault()
+        actions.setIsLogged(false)
+        actions.setIsAdmin(false)
+        actions.setUser("Guest")
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        navigate("/login")
+    }
     return (
         <nav className="navbar navbar-light bg-light">
             <div className="container-flex d-flex col justify-content-between">
@@ -13,9 +25,13 @@ export const Navbar = () => {
                     </Link>
                 </div>
                 <div className="">
-                    <Link to="/login">
-                        <span className="navbar-brand">Login</span>
+                    <Link to="/edit-profile">
+                        <span className="navbar-brand">Edit Profile</span>
                     </Link>
+                    <Link to="/sign-up">
+                        <span className="navbar-brand">Sign Up</span>
+                    </Link>
+                    {store.isLogged == true ? <span type="button" onClick={handleLogoutButton} className="navbar-brand">Logout</span> : <Link to="/login"><span className="navbar-brand">Login</span></Link>}
                     <Link to="/contacts">
                         <span className="navbar-brand">Contacts</span>
                     </Link>
@@ -54,6 +70,7 @@ export const Navbar = () => {
                             )}
                         </ul>
                     </div>
+                    <div></div>
                 </div>
                 {/* <div className="ml-auto">
 					<Link to="/demo">

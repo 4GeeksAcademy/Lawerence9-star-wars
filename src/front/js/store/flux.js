@@ -12,13 +12,40 @@ const getState = ({ getStore, getActions, setStore }) => {
 			currentPlanet: {},
 			species: [],
 			currentSpecie: {},
-			favouritesList: []
+			favouritesList: [],
+			user: {},
+			isAdmin: false,
+			isLogged: false
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
 			exampleFunction: () => {
 				getActions().changeColor(0, "green");
 			},
+			editProfile: async (userData) =>{
+				const token = localStorage.getItem("token")
+				//console.log("data", data, "userId", userId);
+				const uri = `${process.env.BACKEND_URL}/api/test`
+				const options = {
+					method: "PUT",
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`
+					},
+					body: JSON.stringify(userData)
+
+				}
+
+				const response = await fetch(uri, options)
+				const data = await response.json()
+				//setStore({user: data.results})
+				//localStorage.setItem("user", JSON.stringify(data.results))
+				console.log("soy el response", data);
+				
+			},
+			setUser:(newUser) =>setStore({user: newUser}),
+			setIsLogged: (value) => setStore({isLogged: value}),
+			setIsAdmin: (value) => setStore({isAdmin: value}),
 			setCurrentContact: (contact) => setStore({ currentContact: { ...contact } }),
 			getContacts: async () => {
 				const host = "https://playground.4geeks.com/contact/agendas"
@@ -264,29 +291,87 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ currentSpecie: { ...specieData, uid } });
 			},
 
-			login: async (email, password) => {
-				const host = "https://literate-umbrella-p65qg6pwpxw36g4p-3001.app.github.dev";
-				const endpoint = "api/login";
-				const uri = `${host}/${endpoint}`;
+			login: async (dataToSend) => {
+				const uri = `${process.env.BACKEND_URL}/api/login`;
 				const options = {
-					method: "POST",
+					method: 'POST',
 					headers: {
 						"Content-Type": "application/json"
 					},
-					body: JSON.stringify({ email, password })
+					body: JSON.stringify(dataToSend)
+				};
+				const response = await fetch(uri, options)
+				if (!response.ok) {
+					console.log('error', response.status, response.statusText)
+					return
+				}
+				const data = await response.json();
+				console.log("data", data);
+				
+				setStore({
+				 	user: data.results,
+				 	isAdmin: data.is_admin,
+				 	isLogged: true					
+				 })
+				// console.log("el login", getStore().user);
+				
+				// localStorage.setItem('token', data.access_token)
+				// localStorage.setItem('user', JSON.stringify(data))
+			},
+			
+			signup: async (dataToSend) => {
+				const uri = `${process.env.BACKEND_URL}/api/signup`;
+				const options = {
+					method: 'POST',
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify(dataToSend)
+				};
+				const response = await fetch(uri, options);
+				if (!response.ok) {
+					console.log('error', response.status, response.statusText);
+					return;
+				}
+				const data = await response.json();
+				console.log(data);
+				setStore({
+					user: data.first_name,
+					isAdmin: data.is_admin,
+					isLogged: true
+				});
+			
+				localStorage.setItem('token', data.access_token);
+				localStorage.setItem('user', JSON.stringify(data));
+			},
+
+			updateProfile: async (updatedUser) => {
+				const uri = `${process.env.BACKEND_URL}/api/users/${userId}`;
+				const options = {
+					method: 'PUT',
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${localStorage.getItem("token")}` 
+					},
+					body: JSON.stringify(updatedUser)
 				};
 			
 				const response = await fetch(uri, options);
 				if (!response.ok) {
-					console.log("Error", response.status, response.statusText);
-					return false;
+					console.log('Error updating profile:', response.status, response.statusText);
+					return;
 				}
 			
 				const data = await response.json();
-				sessionStorage.setItem("token", data.access_token);
-				
-				return true;
-			},			
+				console.log('Profile updated successfully:', data);
+			
+				// Guardar usuario completo en el store
+				setStore({ user: data });
+			
+				// Guardar usuario completo en localStorage
+				localStorage.setItem('user', JSON.stringify(data));
+			},
+			
 
 			getMessage: async () => {
 				try {

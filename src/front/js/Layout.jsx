@@ -21,6 +21,9 @@ import { SpecieDetails } from "./pages/SpecieDetails.jsx";
 import { PlanetDetails } from "./pages/PlanetDetails.jsx";
 import { CharacterDetails } from "./pages/CharacterDetails.jsx";
 import { Login } from "./pages/Login.jsx";
+import { SignUp } from "./pages/SignUp.jsx";
+import { Profile } from "./pages/Profile.jsx";
+import { EditProfile } from "./pages/EditProfile.jsx";
 
 
 //create your first component
@@ -49,6 +52,8 @@ const Layout = () => {
                         <Route element={<Species />} path='/species' />
                         <Route element={<SpecieDetails />} path='/specie-details' />
                         <Route element={<Login />} path ='/login'/>
+                        <Route element={<SignUp />} path="/sign-up"/>
+                        <Route element={<EditProfile/>} path="/edit-profile"/>
                         <Route element={<Error404 />} path='*' />
                     </Routes>
                     <Footer />
