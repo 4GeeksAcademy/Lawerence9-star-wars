@@ -90,31 +90,9 @@ def login():
     return response_body, 200
 
 
-@api.route("/edit-profile/", methods=["PUT"])
-# @jwt_required()
-def edit_user():
-    response_body = {}
-    current_user = get_jwt_identity()
-    response_body["message"] = "Soy el mensaje para el user"
-    data = request.json
-    print("Soy el data", data)
-    row = db.session.execute(db.select(Users).where(Users.email == current_user)).scalar()
-    print("soy la fila", row.serialize())
-    row.first_name = data["first_name"]
-    row.last_name = data["last_name"]
-    row.email = data["email"]
-    # row.is_admin = data["is_admin"]
-    # row.is_active = data["is_active"]
-
-    response_body["results"] = row.serialize()
-    db.session.commit()
-
-    return response_body, 200
-
-
-@api.route("/test", methods=["PUT"])
+@api.route("/edit-profile", methods=["PUT"])
 @jwt_required()
-def test():
+def edit_user():
     response_body= {"hola": "chau"}
     request_data = request.json
     token_data = get_jwt()
@@ -122,16 +100,14 @@ def test():
     response_body["request_data"] = request_data
 
     row = db.session.execute(db.select(Users).where(Users.id == token_data["user_id"])).scalar()
-    print("soy la fila", row.serialize())
-    row.first_name = request_data["first_name"]
-    row.last_name = request_data["last_name"]
-    row.email = request_data["email"]
-    row.is_admin = request_data["is_admin"]
-    row.is_active = request_data["is_active"]
+    row.first_name = request_data.get("firstName", row.first_name)
+    row.last_name = request_data.get("lastName", row.last_name)
+    row.email = request_data.get("email", row.email)
+    print("el request_data",request_data)
     db.session.commit()
+    print("soy la fila", row.serialize())
     response_body["results"] = row.serialize()
     return response_body, 200
-
 
 
 # Protect a route with jwt_required, which will kick out requests

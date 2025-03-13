@@ -6,62 +6,32 @@ export const Profile = () => {
     const { store, actions } = useContext(Context);
     const navigate = useNavigate();
     
-    // Estado para almacenar el usuario
-    const [user, setUser] = useState(() => {
-        const storedUser = localStorage.getItem("user");
-        return storedUser ? JSON.parse(storedUser) : null;
-    });
-
-    // Estados para los campos del formulario
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [email, setEmail] = useState("");
-
-    // Actualizar los estados solo si el usuario cambia
-    useEffect(() => {
-        if (user) {
-            setFirstName(user.first_name || "");
-            setLastName(user.last_name || "");
-            setEmail(user.email || "");
-        }
-    }, [user]); // Se ejecuta solo si `user` cambia
-
-    const handleSubmitEdit = (event) => {
-        event.preventDefault();
-        if (!user || !user.id) {
-            console.log("User ID is missing");
-            return;
-        }
-    
-        const updatedUser = { 
-            first_name: firstName, 
-            last_name: lastName, 
-            email: email 
-        };
-
-        actions.updateProfile(updatedUser);
-    };
-
-    if (!user) return null; // Evita renderizado innecesario
+    const handleEdit = () => {
+        navigate("/edit-profile")
+    }
 
     return (
-        <div className="container mt-5">
-            <h2 className="mb-4">Profile</h2>
-            <form className="card p-4 shadow" onSubmit={handleSubmitEdit}>
-                <div className="mb-3">
-                    <label className="form-label">First Name</label>
-                    <input type="text" className="form-control" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+        <ul className="list-group">
+            <li className="list-group-item d-flex align-items-center position-relative w-100">
+                <div className="position-absolute top-0 end-0 mt-2 me-2">
+                    <i className="fa-solid fa-pencil mx-2 text-success" onClick={() => handleEdit(store.user)}></i>
                 </div>
-                <div className="mb-3">
-                    <label className="form-label">Last Name</label>
-                    <input type="text" className="form-control" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+                
+                <img
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJntjE-wx3gZvAJMG5V2BVbaFW8MWsPOolsw&s"
+                    alt="Nahobino"
+                    className="img-fluid rounded-circle"
+                    style={{ width: "100px", height: "100px", objectFit: "cover" }}
+                />
+                <div className="ms-3 flex-grow-1">
+                    <h5 className="mb-1">{store.user.first_name} {store.user.last_name}</h5>
+                    
+                    <p className="mb-0">
+                        <i className="fa-solid fa-envelope me-2"></i>
+                        <span style={{ fontFamily: "Arial, sans-serif" }}>{store.user.email}</span>
+                    </p>
                 </div>
-                <div className="mb-3">
-                    <label className="form-label">Email</label>
-                    <input type="email" className="form-control" value={email} onChange={(e) => setEmail(e.target.value)} />
-                </div>
-                <button className="btn btn-primary w-100 py-2 p-4" type="submit">Save changes</button>
-            </form>
-        </div>
+            </li>
+        </ul>
     );
 };

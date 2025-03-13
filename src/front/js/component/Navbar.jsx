@@ -25,8 +25,8 @@ export const Navbar = () => {
                     </Link>
                 </div>
                 <div className="">
-                    <Link to="/edit-profile">
-                        <span className="navbar-brand">Edit Profile</span>
+                    <Link to="/profile">
+                        <span className="navbar-brand">Profile</span>
                     </Link>
                     <Link to="/sign-up">
                         <span className="navbar-brand">Sign Up</span>

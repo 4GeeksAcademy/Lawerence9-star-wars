@@ -24,8 +24,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			editProfile: async (userData) =>{
 				const token = localStorage.getItem("token")
-				//console.log("data", data, "userId", userId);
-				const uri = `${process.env.BACKEND_URL}/api/test`
+				
+				const uri = `${process.env.BACKEND_URL}/api/edit-profile`
 				const options = {
 					method: "PUT",
 					headers: {
@@ -38,9 +38,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				const response = await fetch(uri, options)
 				const data = await response.json()
-				//setStore({user: data.results})
-				//localStorage.setItem("user", JSON.stringify(data.results))
-				console.log("soy el response", data);
+				setStore({user: data.results})
+				localStorage.setItem("user", JSON.stringify(data.results))
 				
 			},
 			setUser:(newUser) =>setStore({user: newUser}),
@@ -306,17 +305,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return
 				}
 				const data = await response.json();
-				console.log("data", data);
 				
 				setStore({
 				 	user: data.results,
 				 	isAdmin: data.is_admin,
 				 	isLogged: true					
-				 })
-				// console.log("el login", getStore().user);
-				
-				// localStorage.setItem('token', data.access_token)
-				// localStorage.setItem('user', JSON.stringify(data))
+				 })				
+				localStorage.setItem('token', data.access_token)
+				localStorage.setItem('user', JSON.stringify(data))
 			},
 			
 			signup: async (dataToSend) => {
@@ -334,7 +330,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return;
 				}
 				const data = await response.json();
-				console.log(data);
 				setStore({
 					user: data.first_name,
 					isAdmin: data.is_admin,
@@ -342,33 +337,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				});
 			
 				localStorage.setItem('token', data.access_token);
-				localStorage.setItem('user', JSON.stringify(data));
-			},
-
-			updateProfile: async (updatedUser) => {
-				const uri = `${process.env.BACKEND_URL}/api/users/${userId}`;
-				const options = {
-					method: 'PUT',
-					headers: {
-						"Content-Type": "application/json",
-						Authorization: `Bearer ${localStorage.getItem("token")}` 
-					},
-					body: JSON.stringify(updatedUser)
-				};
-			
-				const response = await fetch(uri, options);
-				if (!response.ok) {
-					console.log('Error updating profile:', response.status, response.statusText);
-					return;
-				}
-			
-				const data = await response.json();
-				console.log('Profile updated successfully:', data);
-			
-				// Guardar usuario completo en el store
-				setStore({ user: data });
-			
-				// Guardar usuario completo en localStorage
 				localStorage.setItem('user', JSON.stringify(data));
 			},
 			

@@ -12,8 +12,8 @@ class Users(db.Model):
     password = db.Column(db.String(), nullable=False)
     first_name = db.Column(db.String())
     last_name = db.Column(db.String())
-    is_active = db.Column(db.Boolean(), nullable=False)
-    is_admin = db.Column(db.Boolean(), nullable=False)
+    is_active = db.Column(db.Boolean(), nullable=False, default=True)
+    is_admin = db.Column(db.Boolean(), nullable=False, default=False)
     def __repr__(self):
         return f'<User id: {self.id} - {self.email}>'
 

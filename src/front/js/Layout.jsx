@@ -53,6 +53,7 @@ const Layout = () => {
                         <Route element={<SpecieDetails />} path='/specie-details' />
                         <Route element={<Login />} path ='/login'/>
                         <Route element={<SignUp />} path="/sign-up"/>
+                        <Route element={<Profile/>} path="/profile"/>
                         <Route element={<EditProfile/>} path="/edit-profile"/>
                         <Route element={<Error404 />} path='*' />
                     </Routes>
