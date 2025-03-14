@@ -44,11 +44,8 @@ export const EditProfile = () => {
                     </label>
                     <input onChange={handleChange} type="email" className="form-control" name="email" value={form.email} placeholder="Enter Email" />
                 </div>
-                <div className="d-grid gap-2 rounded mt-3 ">
+                <div className="d-grid gap-2 rounded mt-3 mb-3">
                     <button type="submit" className="btn btn-primary">Save</button>
-                </div>
-                <div className="d-flex align-content-start">
-                    <Link to="/" className="link-primary">or get back to your profile</Link>
                 </div>
             </form>
         </div>

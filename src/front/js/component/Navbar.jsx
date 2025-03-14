@@ -25,9 +25,8 @@ export const Navbar = () => {
                     </Link>
                 </div>
                 <div className="">
-                    <Link to="/profile">
-                        <span className="navbar-brand">Profile</span>
-                    </Link>
+                    {store.isLogged == true ? <Link to="/profile"><span className="navbar-brand">Profile</span></Link> : ""}
+                    
                     <Link to="/sign-up">
                         <span className="navbar-brand">Sign Up</span>
                     </Link>
@@ -70,13 +69,7 @@ export const Navbar = () => {
                             )}
                         </ul>
                     </div>
-                    <div></div>
                 </div>
-                {/* <div className="ml-auto">
-					<Link to="/demo">
-						<button className="btn btn-primary">Check the Context in action</button>
-					</Link>
-				</div> */}
             </div>
         </nav>
     );
